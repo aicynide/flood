@@ -62,7 +62,7 @@ export const diskUsage: Readonly<Record<SupportedPlatform, (timeout: number) => 
   linux: (timeout) =>
     spawnAsync(
       'df',
-      ['-T'],
+      [],
       {
         timeout: timeout,
       },
@@ -74,7 +74,6 @@ export const diskUsage: Readonly<Record<SupportedPlatform, (timeout: number) => 
         .slice(1)
         .map((disk) => disk.split(/\s+/))
         .filter((disk) => filterMountPoint(disk[6]))
-        .filter((disk) => !['devtmpfs', 'squashfs', 'tmpfs', 'overlay'].includes(disk[1]))
         .map(([_dev, _fs, size, used, avail, _pcent, target]) => {
           return {
             size: Number.parseInt(size, 10) * 1024,
